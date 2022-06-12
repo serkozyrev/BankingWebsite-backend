@@ -20,7 +20,7 @@ def adding_edited_record(transid, transtype, description, amount, day,month,year
     if transtype == 'expense':
         dollars = float(rate) * float(amount)
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('select * from expenses where expenseid = %s', (transid,))
+            cursor.execute('select * from expense where expenseid = %s', (transid,))
             transaction_by_id = cursor.fetchone()
         if transaction_by_id:
             if account != transaction_by_id[9]:
@@ -37,7 +37,7 @@ def adding_edited_record(transid, transtype, description, amount, day,month,year
                 elif transaction_by_id[9] == 'SnezhanaAccount':
                     result_old = 'Счет Снежаны'
                 with CursorFromConnectionFromPool() as cursor:
-                    cursor.execute('update expenses set description=%s, expensebalance=%s, transactionday=%s, '
+                    cursor.execute('update expense set description=%s, expensebalance=%s, transactionday=%s, '
                                    'transactionmonth=%s, transactionyear=%s,amountindollars=%s, category=%s,'
                                    ' account_type=%s where expenseid=%s',
                                    (description, amount, day, month, year, round(dollars, 2), category, account,
@@ -80,7 +80,7 @@ def adding_edited_record(transid, transtype, description, amount, day,month,year
 
             else:
                 with CursorFromConnectionFromPool() as cursor:
-                    cursor.execute('update expenses set description=%s, expensebalance=%s, transactionday=%s, '
+                    cursor.execute('update expense set description=%s, expensebalance=%s, transactionday=%s, '
                                    'transactionmonth=%s, transactionyear=%s,amountindollars=%s, category=%s, account_type=%s where expenseid=%s',
                                    (description, amount, day, month, year, round(dollars, 2), category, account,
                                     transid))
@@ -376,11 +376,11 @@ def adding_edited_record(transid, transtype, description, amount, day,month,year
 
     elif transtype == 'revenue':
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('select * from revenues where revenueid = %s', (transid,))
+            cursor.execute('select * from revenue where revenueid = %s', (transid,))
             transaction_by_id = cursor.fetchone()
         if transaction_by_id:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute('update revenues set description=%s, revenuebalance=%s, transactionday=%s, '
+                cursor.execute('update revenue set description=%s, revenuebalance=%s, transactionday=%s, '
                                'transactionmonth=%s, transactionyear=%s, category=%s where revenueid=%s',
                                (description, amount, day, month, year, category, transid))
 

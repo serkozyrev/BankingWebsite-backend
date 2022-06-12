@@ -25,14 +25,14 @@ def analytics_info(account_type, account_type_second=''):
     if account_type_second:
         try:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute("select category, sum(expensebalance), transactionyear from expenses "
+                cursor.execute("select category, sum(expensebalance), transactionyear from expense "
                                "group by transactionmonth, category, transactionyear, account_type"
                                " having transactionmonth='%s' and account_type in(%s, %s)",
                                (current_month, account_type, account_type_second))
                 information = cursor.fetchall()
         except:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute("select category, sum(expensebalance), transactionyear from expenses "
+                cursor.execute("select category, sum(expensebalance), transactionyear from expense "
                                "group by transactionmonth, category, transactionyear, account_type"
                                " having transactionmonth='%s' and account_type in(%s, %s)",
                                (current_month, account_type, account_type_second))
@@ -42,36 +42,36 @@ def analytics_info(account_type, account_type_second=''):
             if record[0] == 'utilitiesPayment':
 
                 new_info_list = {
-                    "title": 'Коммунальные Платежи', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Utilities', "amount": round(record[1],2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'otherPayment':
                 new_info_list = {
-                    "title": 'Другие Платежи', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Other Payment', "amount": round(record[1],2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'medicine':
                 new_info_list = {
-                    "title": 'Лекарства', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Medicine', "amount": round(record[1],2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'moneySendSnezhana':
                 new_info_list = {
-                    "title": 'Перевод Снежане', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Transfer to Line of Credit', "amount": round(record[1],2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'moneySend':
                 new_info_list = {
-                    "title": 'Перевод Дине', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Transfer to Visa', "amount": round(record[1],2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'grocery':
                 new_info_list = {
-                    "title": 'Продукты', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Grocery', "amount": round(record[1],2), "year": record[2], 'type': record[0]
                 }
             else:
                 new_info_list = {
-                    "title": record[0], "amount": f'{round(record[1],2):,}', "year": record[2]
+                    "title": record[0], "amount": round(record[1],2), "year": record[2]
                 }
             info_list.append(new_info_list)
         for category in category_list:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute("select category, sum(expensebalance), transactionmonth, transactionyear from expenses "
+                cursor.execute("select category, sum(expensebalance), transactionmonth, transactionyear from expense "
                                "group by transactionmonth, category, transactionyear, account_type"
                                " having category=%s and account_type in(%s, %s)", (category, account_type, account_type_second))
                 category_summary = cursor.fetchall()
@@ -79,7 +79,7 @@ def analytics_info(account_type, account_type_second=''):
             if category_summary is not None:
                 for info in category_summary:
                     new_category_summary = {
-                        'title': info[0], 'amount': f'{round(info[1],2):,}', 'month': info[2], 'year': info[3]
+                        'title': info[0], 'amount': round(info[1],2), 'month': info[2], 'year': info[3]
                     }
                     yearly_summary.append(new_category_summary)
 
@@ -94,51 +94,53 @@ def analytics_info(account_type, account_type_second=''):
     else:
         try:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute("select category, sum(expensebalance), transactionyear from expenses "
+                cursor.execute("select category, sum(expensebalance), transactionyear from expense "
                                "group by transactionmonth, category, transactionyear, account_type"
                                " having transactionmonth='%s' and account_type=%s",
                                (current_month, account_type))
                 information = cursor.fetchall()
         except:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute("select category, sum(expensebalance), transactionyear from expenses "
+                cursor.execute("select category, sum(expensebalance), transactionyear from expense "
                                "group by transactionmonth, category, transactionyear, account_type"
                                " having transactionmonth='%s' and account_type=%s",
                                (current_month, account_type))
                 information = cursor.fetchall()
         for record in information:
             if record[0] == 'utilitiesPayment':
+
                 new_info_list = {
-                    "title": 'Коммунальные Платежи', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Utilities', "amount": round(record[1], 2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'otherPayment':
                 new_info_list = {
-                    "title": 'Другие Платежи', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Other Payment', "amount": round(record[1], 2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'medicine':
                 new_info_list = {
-                    "title": 'Лекарства', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Medicine', "amount": round(record[1], 2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'moneySendSnezhana':
                 new_info_list = {
-                    "title": 'Перевод Снежане', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Transfer to Line of Credit', "amount": round(record[1], 2), "year": record[2],
+                    'type': record[0]
                 }
             elif record[0] == 'moneySend':
                 new_info_list = {
-                    "title": 'Перевод Дине', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Transfer to Visa', "amount": round(record[1], 2), "year": record[2], 'type': record[0]
                 }
             elif record[0] == 'grocery':
                 new_info_list = {
-                    "title": 'Продукты', "amount": f'{round(record[1],2):,}', "year": record[2], 'type': record[0]
+                    "title": 'Grocery', "amount": round(record[1], 2), "year": record[2], 'type': record[0]
                 }
             else:
                 new_info_list = {
-                    "title": record[0], "amount": f'{round(record[1],2):,}', "year": record[2]
+                    "title": record[0], "amount": round(record[1], 2), "year": record[2]
                 }
             info_list.append(new_info_list)
         for category in category_list:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute("select category, sum(expensebalance), transactionmonth, transactionyear from expenses "
+                cursor.execute("select category, sum(expensebalance), transactionmonth, transactionyear from expense "
                                "group by transactionmonth, category, transactionyear, account_type"
                                " having category=%s and account_type=%s", (category, account_type))
                 category_summary = cursor.fetchall()
@@ -146,7 +148,7 @@ def analytics_info(account_type, account_type_second=''):
             if category_summary is not None:
                 for info in category_summary:
                     new_category_summary = {
-                        'title': info[0], 'amount': f'{round(info[1],2):,}', 'month': info[2], 'year': info[3]
+                        'title': info[0], 'amount': round(info[1],2), 'month': info[2], 'year': info[3]
                     }
                     yearly_summary.append(new_category_summary)
 

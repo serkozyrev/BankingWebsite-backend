@@ -20,11 +20,14 @@ def add(transaction_type, description, amount, day, month, year, category, rate,
     if transaction_type == 'revenue':
         try:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute('insert into revenues(description, revenuebalance, transactionday,'
+                cursor.execute('insert into revenue(description, revenuebalance, transactionday,'
                                ' transactionmonth, transactionyear, category, transactiontype) values(%s, %s, %s, %s, %s, %s, %s)',
                                (description, amount, day, month, year, category, transaction_type))
         except:
-            return jsonify({'message': 'Не получилось добавить новую запись, попробуйте позже'})
+            with CursorFromConnectionFromPool() as cursor:
+                cursor.execute('insert into revenue(description, revenuebalance, transactionday,'
+                               ' transactionmonth, transactionyear, category, transactiontype) values(%s, %s, %s, %s, %s, %s, %s)',
+                               (description, amount, day, month, year, category, transaction_type))
 
         if category == 'moneyReceiving':
             try:
@@ -83,7 +86,7 @@ def add(transaction_type, description, amount, day, month, year, category, rate,
     elif transaction_type == 'expense':
         try:
             with CursorFromConnectionFromPool() as cursor:
-                cursor.execute('insert into expenses(description, expensebalance, transactionday,'
+                cursor.execute('insert into expense(description, expensebalance, transactionday,'
                                ' transactionmonth, transactionyear, amountindollars, category, transactiontype, account_type) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
                                (description, amount, day, month, year,round(dollars, 2), category, transaction_type, account_type))
         except:

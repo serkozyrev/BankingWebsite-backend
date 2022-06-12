@@ -20,7 +20,7 @@ Database.initialize(user=f'{DB_USER}',
 def collect_information():
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('select * from revenues order by transactionmonth desc,transactionday desc,'
+            cursor.execute('select * from revenue order by transactionmonth desc,transactionday desc,'
                            ' transactionyear desc')
             revenues = cursor.fetchall()
     except:
@@ -39,7 +39,7 @@ def collect_information():
     current_month = datetime.now().month
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute("select * from expenses where account_type='PapaAccount'"
+            cursor.execute("select * from expense where account_type='PapaAccount'"
                            " or account_type='SnezhanaAccount' order by transactionmonth desc,transactionday desc,"
                            "  transactionyear desc")
             expenses = cursor.fetchall()
@@ -48,7 +48,7 @@ def collect_information():
 
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute("select * from expenses where account_type='DinaAccount' order by transactionmonth desc,"
+            cursor.execute("select * from expense where account_type='DinaAccount' order by transactionmonth desc,"
                            " transactionday desc,  transactionyear desc")
             expenses_dina = cursor.fetchall()
     except:
@@ -57,7 +57,7 @@ def collect_information():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(f"select sum(expensebalance) "
-                           f"from expenses"
+                           f"from expense"
                            f" group by transactionmonth,account_type"
                            f" having transactionmonth='%s' and account_type='PapaAccount'", (current_month,))
             expenses_total = cursor.fetchone()
@@ -67,7 +67,7 @@ def collect_information():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(f"select sum(expensebalance) "
-                           f"from expenses"
+                           f"from expense"
                            f" group by transactionmonth,account_type"
                            f" having transactionmonth='%s' and account_type='DinaAccount'", (current_month,))
             expenses_total_dina = cursor.fetchone()
@@ -77,7 +77,7 @@ def collect_information():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(f"select sum(expensebalance) "
-                           f"from expenses"
+                           f"from expense"
                            f" group by transactionmonth,account_type"
                            f" having transactionmonth='%s' and account_type='SnezhanaAccount'", (current_month,))
             expenses_total_snezhana = cursor.fetchone()
@@ -147,7 +147,7 @@ def collect_information():
     my_balance = float(account_balance_mine[0])
     snezhana_balance = float(account_balance_snezhana[0])
 
-    return {'message': 'Запись успешно добавлена', 'expensesPapa': expenses_list,
+    return {'message': 'Record Saved Successfully', 'expensesPapa': expenses_list,
                     'expensesDina': expenses_list_dina, 'revenues': revenues_list,
                     'total': f'{round(total_expense, 2):,}', 'totalDina': f'{round(total_expense_dina, 2):,}',
                     'dina_balance': f'{round(dina_balance, 2):,}', 'my_balance': f'{round(my_balance, 2):,}',

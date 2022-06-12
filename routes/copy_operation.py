@@ -20,18 +20,18 @@ def copy(transaction_id, transaction_type, copy_day, copy_month, copy_year):
     if transaction_type == 'expense':
         try:
             with CursorFromConnectionFromPool() as cursors:
-                cursors.execute("select * from expenses where expenseid=%s", (transaction_id, ))
+                cursors.execute("select * from expense where expenseid=%s", (transaction_id, ))
                 record = cursors.fetchone()
         except:
             with CursorFromConnectionFromPool() as cursors:
-                cursors.execute("select * from expenses where expenseid=%s", (transaction_id, ))
+                cursors.execute("select * from expense where expenseid=%s", (transaction_id, ))
                 record_backup = cursors.fetchone()
             # return jsonify(
             #     {'message': 'Не получилось получить данные о записи, попробуйте позже'})
         if record is None:
             try:
                 with CursorFromConnectionFromPool() as cursor:
-                    cursor.execute('insert into expenses(description, expensebalance, transactionday,'
+                    cursor.execute('insert into expense(description, expensebalance, transactionday,'
                                    ' transactionmonth, transactionyear, amountindollars, category, transactiontype,account_type) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
                                    (record_backup[1], record_backup[2], copy_day, copy_month, copy_year, round(record_backup[6], 2), record_backup[7],
                                     record_backup[8], record_backup[9]))
@@ -168,7 +168,7 @@ def copy(transaction_id, transaction_type, copy_day, copy_month, copy_year):
         else:
             try:
                 with CursorFromConnectionFromPool() as cursor:
-                    cursor.execute('insert into expenses(description, expensebalance, transactionday,'
+                    cursor.execute('insert into expense(description, expensebalance, transactionday,'
                                    ' transactionmonth, transactionyear, amountindollars, category, transactiontype, account_type) values(%s, %s, %s, %s, %s, %s, %s, %s, %s)',
                                    (record[1], record[2], copy_day, copy_month, copy_year, round(record[6], 2), record[7],
                                     record[8], record[9]))
@@ -305,16 +305,16 @@ def copy(transaction_id, transaction_type, copy_day, copy_month, copy_year):
     elif transaction_type == 'revenue':
         try:
             with CursorFromConnectionFromPool() as cursors:
-                cursors.execute("select * from revenues where revenueid=%s", (transaction_id, ))
+                cursors.execute("select * from revenue where revenueid=%s", (transaction_id, ))
                 record = cursors.fetchone()
         except:
             with CursorFromConnectionFromPool() as cursors:
-                cursors.execute("select * from revenues where revenueid=%s", (transaction_id, ))
+                cursors.execute("select * from revenue where revenueid=%s", (transaction_id, ))
                 record_backup = cursors.fetchone()
         if record is None:
             try:
                 with CursorFromConnectionFromPool() as cursor:
-                    cursor.execute('insert into revenues(description, revenuebalance, transactionday,'
+                    cursor.execute('insert into revenue(description, revenuebalance, transactionday,'
                                    ' transactionmonth, transactionyear, category, transactiontype) values(%s, %s, %s, %s, %s, %s, %s)',
                                    (record_backup[1], record_backup[2], copy_day, copy_month, copy_year, record_backup[6], record_backup[7]))
             except:
@@ -377,7 +377,7 @@ def copy(transaction_id, transaction_type, copy_day, copy_month, copy_year):
         else:
             try:
                 with CursorFromConnectionFromPool() as cursor:
-                    cursor.execute('insert into revenues(description, revenuebalance, transactionday,'
+                    cursor.execute('insert into revenue(description, revenuebalance, transactionday,'
                                    ' transactionmonth, transactionyear, category, transactiontype) values(%s, %s, %s, %s, %s, %s, %s)',
                                    (record[1], record[2], copy_day, copy_month, copy_year, record[6],
                                     record[7]))

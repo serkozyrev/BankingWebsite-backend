@@ -21,7 +21,7 @@ def expenses():
     currentMonth = datetime.now().month
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute("select * from expenses where account_type='PapaAccount'"
+            cursor.execute("select * from expense where account_type='PapaAccount'"
                            " or account_type='SnezhanaAccount' order by transactionmonth desc,transactionday desc,  transactionyear desc")
             expenses = cursor.fetchall()
     except:
@@ -30,7 +30,7 @@ def expenses():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(
-                "select * from expenses where account_type='DinaAccount' order by transactionmonth desc,transactionday desc,  transactionyear desc")
+                "select * from expense where account_type='DinaAccount' order by transactionmonth desc,transactionday desc,  transactionyear desc")
             expenses_dina = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о доходах, попробуйте позже'})
@@ -38,7 +38,7 @@ def expenses():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(f"select sum(expensebalance) "
-                           f"from expenses"
+                           f"from expense"
                            f" group by transactionmonth,account_type"
                            f" having transactionmonth='%s' and account_type='PapaAccount'", (currentMonth,))
             expenses_total = cursor.fetchone()
@@ -48,7 +48,7 @@ def expenses():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(f"select sum(expensebalance) "
-                           f"from expenses"
+                           f"from expense"
                            f" group by transactionmonth,account_type"
                            f" having transactionmonth='%s' and account_type='DinaAccount'", (currentMonth,))
             expenses_total_dina = cursor.fetchone()
@@ -58,7 +58,7 @@ def expenses():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(f"select sum(expensebalance) "
-                           f"from expenses"
+                           f"from expense"
                            f" group by transactionmonth,account_type"
                            f" having transactionmonth='%s' and account_type='SnezhanaAccount'", (currentMonth,))
             expenses_total_snezhana = cursor.fetchone()

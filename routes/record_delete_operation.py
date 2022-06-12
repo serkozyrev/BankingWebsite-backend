@@ -20,7 +20,7 @@ def delete(transaction_id, transaction_type):
     if transaction_type == 'revenue':
         try:
             with CursorFromConnectionFromPool() as cursors:
-                cursors.execute("select * from revenues where revenueid=%s", (transaction_id, ))
+                cursors.execute("select * from revenue where revenueid=%s", (transaction_id, ))
                 record = cursors.fetchone()
         except:
             return jsonify({'message': 'Не получилось получить данные о записи, попробуйте позже'})
@@ -28,7 +28,7 @@ def delete(transaction_id, transaction_type):
         if record:
             try:
                 with CursorFromConnectionFromPool() as cursors:
-                    cursors.execute("delete from revenues where revenueid=%s", (transaction_id,))
+                    cursors.execute("delete from revenue where revenueid=%s", (transaction_id,))
             except:
                 return jsonify({'message': 'Не получилось получить данные о записи, попробуйте позже'})
         if record[6] == 'pensionPapa':
@@ -71,7 +71,7 @@ def delete(transaction_id, transaction_type):
     elif transaction_type == 'expense':
         try:
             with CursorFromConnectionFromPool() as cursors:
-                cursors.execute("select * from expenses where expenseid=%s", (transaction_id,))
+                cursors.execute("select * from expense where expenseid=%s", (transaction_id,))
                 record = cursors.fetchone()
         except:
             return jsonify({'message': 'Не получилось получить данные о записи, попробуйте позже'})
@@ -79,7 +79,7 @@ def delete(transaction_id, transaction_type):
         if record:
             try:
                 with CursorFromConnectionFromPool() as cursors:
-                    cursors.execute("delete from expenses where expenseid=%s", (transaction_id,))
+                    cursors.execute("delete from expense where expenseid=%s", (transaction_id,))
             except:
                 return jsonify({'message': 'Не получилось получить данные о записи, попробуйте позже'})
 

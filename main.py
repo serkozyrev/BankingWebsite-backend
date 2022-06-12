@@ -214,7 +214,7 @@ def search():
     description_field = request.json["description"]
     with CursorFromConnectionFromPool() as cursor:
         cursor.execute(
-            f"select * from expenses where lower(description) like '%{description_field}%' order by transactionmonth desc,transactionday desc,  transactionyear desc")
+            f"select * from expense where lower(description) like '%{description_field}%' order by transactionmonth desc,transactionday desc,  transactionyear desc")
         all_records_found = cursor.fetchall()
 
     expenses_list = []

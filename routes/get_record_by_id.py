@@ -19,7 +19,7 @@ Database.initialize(user=f'{DB_USER}',
 def get_by_id_info(transid,transtype):
     if transtype == 'expense':
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('select * from expenses where expenseid=%s', (transid,))
+            cursor.execute('select * from expense where expenseid=%s', (transid,))
             transaction_by_id = cursor.fetchone()
 
         expense_transaction_info = {
@@ -31,7 +31,7 @@ def get_by_id_info(transid,transtype):
         return jsonify({'expense': expense_transaction_info})
     elif transtype == 'revenue':
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('select * from revenues where revenueid = %s', (transid,))
+            cursor.execute('select * from revenue where revenueid = %s', (transid,))
             revenue_transaction_by_id = cursor.fetchone()
 
         revenue_transaction_info = {
