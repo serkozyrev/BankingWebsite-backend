@@ -261,6 +261,7 @@ def edit_record():
                          result_old)
 
     info = collect_information()
+
     return info
 
 
