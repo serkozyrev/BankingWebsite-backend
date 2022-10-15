@@ -38,7 +38,10 @@ def get_all_bloodpres():
         date = request.json["date"]
         date_splited = date.split('-')
         day = date_splited[2]
-        month = date_splited[1][-1:]
+        if int(date_splited[1]) < 10:
+            month = date_splited[1][-1:]
+        else:
+            month = date_splited[1]
         year = date_splited[0]
         highlevel = request.json["highlevel"]
         lowlevel = request.json["lowlevel"]
@@ -65,7 +68,10 @@ def edit_bloodpressure():
     date = request.json["date"]
     date_splited = date.split('-')
     day = date_splited[2]
-    month = date_splited[1][-1:]
+    if int(date_splited[1]) < 10:
+        month = date_splited[1][-1:]
+    else:
+        month = date_splited[1]
     year = date_splited[0]
     highlevel = request.json["highlevel"]
     lowlevel = request.json["lowlevel"]
@@ -150,7 +156,10 @@ def add_new_record():
 
     date_splited = date.split('-')
     day = date_splited[2]
-    month = date_splited[1][-1:]
+    if int(date_splited[1]) < 10:
+        month = date_splited[1][-1:]
+    else:
+        month = date_splited[1]
     year = date_splited[0]
     dollars = float(rate) * float(amount)
 
@@ -169,7 +178,10 @@ def copy_record():
 
     date_splited = date.split('-')
     copy_day = date_splited[2]
-    copy_month = date_splited[1][-1:]
+    if int(date_splited[1]) < 10:
+        copy_month = date_splited[1][-1:]
+    else:
+        copy_month = date_splited[1]
     copy_year = date_splited[0]
 
     copy(transaction_id, transaction_type, copy_day, copy_month, copy_year)
@@ -253,7 +265,10 @@ def edit_record():
 
     date_splited = date.split('-')
     day = date_splited[2]
-    month = date_splited[1][-1:]
+    if int(date_splited[1]) < 10:
+        month = date_splited[1][-1:]
+    else:
+        month = date_splited[1]
     year = date_splited[0]
     result_new = ''
     result_old = ''
