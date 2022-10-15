@@ -21,8 +21,8 @@ def expenses():
     currentMonth = datetime.now().month
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute("select * from expense where account_type='PapaAccount'"
-                           " or account_type='SnezhanaAccount' order by transactionmonth desc,transactionday desc,  transactionyear desc")
+            cursor.execute("select * from expenses where account_type='PapaAccount'"
+                           " or account_type='SnezhanaAccount' order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc")
             expenses = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о доходах, попробуйте позже'})
@@ -30,7 +30,7 @@ def expenses():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(
-                "select * from expense where account_type='DinaAccount' order by transactionmonth desc,transactionday desc,  transactionyear desc")
+                "select * from expenses where account_type='DinaAccount' order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc")
             expenses_dina = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о доходах, попробуйте позже'})

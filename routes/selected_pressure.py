@@ -19,8 +19,8 @@ Database.initialize(user=f'{DB_USER}',
 
 def single_record():
     with CursorFromConnectionFromPool() as cursor:
-        cursor.execute('select * from bloodpressure order by pressuremonth desc,pressureday desc,'
-                       '  pressureyear desc,timeofmeasure desc')
+        cursor.execute('select * from bloodpressure order by pressureyear desc, pressuremonth collate numeric_value desc,pressureday desc,'
+                       '  timeofmeasure desc')
         bloodpressure_list = cursor.fetchall()
     bloodpressures_list = []
     for item in bloodpressure_list:
