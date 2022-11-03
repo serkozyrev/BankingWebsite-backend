@@ -50,7 +50,7 @@ def get_all_bloodpres():
         timeline = request.json["timeline"]
 
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('insert into bloodpressure(pressureday, pressuremonth, pressureyear,highlevel,'
+            cursor.execute('insert into bloodpressure(pressureyear,pressureday, pressuremonth, highlevel,'
                            ' lowlevel,pulse, description, timeofmeasure) values(%s, %s, %s, %s, %s,%s, %s, %s)',
                            (day, month, year, highlevel, lowlevel, pulse, description, timeline))
 
@@ -127,7 +127,7 @@ def get_all_revenue():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(
-                'select * from revenue order by transactionmonth desc,transactionday desc,  transactionyear desc')
+                'select * from revenues order by transactionyear desc, transactionmonth collate numeric_value desc,transactionday desc')
             revenues = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о доходах, попробуйте позже'})
@@ -226,7 +226,8 @@ def search():
     description_field = request.json["description"]
     with CursorFromConnectionFromPool() as cursor:
         cursor.execute(
-            f"select * from expense where lower(description) like '%{description_field}%' order by transactionmonth desc,transactionday desc,  transactionyear desc")
+            f"select * from expense where lower(description) like '%{description_field}%' order by"
+            f" transactionyear desc, transactionmonth collate numeric_value desc,transactionday desc")
         all_records_found = cursor.fetchall()
 
     expenses_list = []
