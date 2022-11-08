@@ -50,7 +50,7 @@ def get_all_bloodpres():
         timeline = request.json["timeline"]
 
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('insert into bloodpressure(pressureyear,pressureday, pressuremonth, highlevel,'
+            cursor.execute('insert into bloodpressure(pressureday, pressuremonth, pressureyear, highlevel,'
                            ' lowlevel,pulse, description, timeofmeasure) values(%s, %s, %s, %s, %s,%s, %s, %s)',
                            (day, month, year, highlevel, lowlevel, pulse, description, timeline))
 
