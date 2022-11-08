@@ -127,7 +127,7 @@ def get_all_revenue():
     try:
         with CursorFromConnectionFromPool() as cursor:
             cursor.execute(
-                'select * from revenues order by transactionyear desc, transactionmonth collate numeric_value desc,transactionday desc')
+                'select * from revenue order by transactionyear desc, transactionmonth collate numeric_value desc,transactionday desc')
             revenues = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о доходах, попробуйте позже'})

@@ -20,7 +20,7 @@ Database.initialize(user=f'{DB_USER}',
 def collect_information():
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute('select * from revenues order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc')
+            cursor.execute('select * from revenue order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc')
             revenues = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о расходах, попробуйте позже'})
@@ -38,7 +38,7 @@ def collect_information():
     current_month = datetime.now().month
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute("select * from expenses where account_type='PapaAccount'"
+            cursor.execute("select * from expense where account_type='PapaAccount'"
                            " or account_type='SnezhanaAccount' order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc")
             expenses = cursor.fetchall()
     except:
@@ -46,7 +46,7 @@ def collect_information():
 
     try:
         with CursorFromConnectionFromPool() as cursor:
-            cursor.execute("select * from expenses where account_type='DinaAccount' order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc")
+            cursor.execute("select * from expense where account_type='DinaAccount' order by transactionyear desc, transactionmonth collate numeric_value desc, transactionday desc")
             expenses_dina = cursor.fetchall()
     except:
         return jsonify({'message': 'Не получилось получить данные о доходах, попробуйте позже'})
